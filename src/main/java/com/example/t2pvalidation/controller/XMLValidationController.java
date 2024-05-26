@@ -13,8 +13,8 @@ public class XMLValidationController {
 
     @GetMapping("/xml_validate")
     public String validateXml() {
-        String xmlFilePath = "src/main/resources/redhat_example.bpmn";
-        String xsdFilePath = "src/main/resources/BPMN20.xsd.xml";
+        String xmlFilePath = "src/main/resources/test/bpmn/redhat_example.bpmn";
+        String xsdFilePath = "src/main/resources/BPMN20.xsd";
         boolean isValid = xmlValidationService.validateXml(xmlFilePath, xsdFilePath);
         return isValid ? "XML is valid" : "XML is not valid";
     }

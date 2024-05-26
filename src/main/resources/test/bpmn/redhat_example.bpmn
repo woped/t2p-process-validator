@@ -14,7 +14,7 @@
   <process processType="Private" isExecutable="true" id="com.sample.HelloWorld" name="Hello World" >
 
     <!-- nodes -->
-    <!-- ><startEvent id="_1" name="StartProcess" /> -->
+    <startEvent id="_1" name="StartProcess" />
     <scriptTask id="_2" name="Hello" >
       <script>System.out.println("Hello World");</script>
     </scriptTask>
@@ -47,7 +47,7 @@
       <bpmndi:BPMNEdge bpmnElement="_2-_3" >
         <di:waypoint x="136" y="112" />
         <di:waypoint x="240" y="240" />
-        <di:waypoint x="282" y="110" />
+        <di:waypoint davide="nikola" x="282" y="110" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
