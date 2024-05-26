@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ValidationStartEventController {
-    String xmlFilePath = "src/main/resources/redhat_example.bpmn";
+    String xmlFilePath = "src/main/resources/test/bpmn/redhat_example.bpmn";
 
     @Autowired
     private ValidationStartEventService validationStartEventService;
 
     @GetMapping("/validate-bpmn")
-    public String validateBpmn(@RequestParam String filePath) {
+    public String validateBpmn(String filePath) {
         boolean isValid = ValidationStartEventService.validateBpmnStartPoint(xmlFilePath);
 
         if (isValid) {
