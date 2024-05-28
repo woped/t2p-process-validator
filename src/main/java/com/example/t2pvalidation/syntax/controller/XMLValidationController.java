@@ -1,6 +1,6 @@
-package com.example.t2pvalidation.controller;
+package com.example.t2pvalidation.syntax.controller;
 
-import com.example.t2pvalidation.service.XMLValidationService;
+import com.example.t2pvalidation.syntax.service.XMLValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
