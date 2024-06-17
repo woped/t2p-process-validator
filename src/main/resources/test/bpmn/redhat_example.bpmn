@@ -47,7 +47,7 @@
       <bpmndi:BPMNEdge bpmnElement="_2-_3" >
         <di:waypoint x="136" y="112" />
         <di:waypoint x="240" y="240" />
-        <di:waypoint davide="nikola" x="282" y="110" />
+        <di:waypoint x="282" y="110" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
