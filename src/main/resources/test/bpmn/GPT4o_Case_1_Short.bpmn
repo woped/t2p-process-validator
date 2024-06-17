@@ -10,7 +10,7 @@
              expressionLanguage="http://www.w3.org/1999/XPath"
              targetNamespace="http://www.activiti.org/processdef">
 
-  <process id="simpleProcess" name="Einfacher Prozess" isExecutable="true">
+  <process id="simpleProcess" name="Einfacher Prozess" isExecutable="true" davide="nikola">
     <!-- Start Event -->
     <startEvent id="startEvent" name="Start">
       <outgoing>sequenceFlow1</outgoing>
@@ -24,6 +24,7 @@
 
     <!-- Exclusive Gateway -->
     <exclusiveGateway id="exclusiveGateway" name="Entscheidungspunkt">
+      <incoming>sequenceFlow2</incoming>
       <incoming>sequenceFlow2</incoming>
       <outgoing>sequenceFlow3</outgoing>
       <outgoing>sequenceFlow4</outgoing>
