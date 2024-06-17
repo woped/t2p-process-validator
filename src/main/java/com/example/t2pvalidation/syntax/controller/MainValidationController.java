@@ -18,15 +18,12 @@ public class MainValidationController {
 
     @PostMapping("/validate")
     public Map<String, Object> validateAll(@RequestParam("file") MultipartFile file) throws IOException {
-        // Save the uploaded file to a temporary location
         File tempFile = File.createTempFile("uploaded-", ".bpmn");
         try (FileOutputStream fos = new FileOutputStream(tempFile)) {
             fos.write(file.getBytes());
         }
 
-        // Validate the uploaded file
         Map<String, Object> result = mainValidationService.validateAll(tempFile.getAbsolutePath());
-
         // Delete the temporary file
         tempFile.delete();
 
