@@ -33,7 +33,6 @@ public class MainValidationService {
         result.put("gatewayValidation", ValidationUtils.mapValidationResult(gatewayValidationResult));
 
         // Call other validation services
-
         return result;
     }
 }

@@ -3,6 +3,10 @@ package com.example.t2pvalidation.syntax.controller;
 import com.example.t2pvalidation.syntax.service.MainValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -11,11 +15,21 @@ public class MainValidationController {
 
     @Autowired
     private MainValidationService mainValidationService;
-    String xmlFilePath = "src/main/resources/test/bpmn/GPT4o_Case_1_Short.bpmn";
 
-    @GetMapping("/validate")
-    public Map<String, Object> validateAll() {
-        //For testing purposes
-        return mainValidationService.validateAll(xmlFilePath);
+    @PostMapping("/validate")
+    public Map<String, Object> validateAll(@RequestParam("file") MultipartFile file) throws IOException {
+        // Save the uploaded file to a temporary location
+        File tempFile = File.createTempFile("uploaded-", ".bpmn");
+        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+            fos.write(file.getBytes());
+        }
+
+        // Validate the uploaded file
+        Map<String, Object> result = mainValidationService.validateAll(tempFile.getAbsolutePath());
+
+        // Delete the temporary file
+        tempFile.delete();
+
+        return result;
     }
 }
