@@ -9,11 +9,16 @@ import org.camunda.bpm.model.bpmn.instance.ExclusiveGateway;
 import org.camunda.bpm.model.bpmn.instance.InclusiveGateway;
 import org.camunda.bpm.model.bpmn.instance.ComplexGateway;
 import org.camunda.bpm.model.bpmn.instance.ParallelGateway;
+import org.camunda.bpm.model.xml.ModelParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,21 +33,32 @@ public class GatewayValidationService {
         List<Object> errors = new ArrayList<>();
         List<Object> warnings = new ArrayList<>();
 
+        BpmnModelInstance modelInstance = null;
         try {
-            BpmnModelInstance modelInstance = Bpmn.readModelFromFile(new File(bpmnFilePath));
-            Collection<Gateway> gateways = modelInstance.getModelElementsByType(Gateway.class);
+            // Attempt to parse the BPMN model
+            modelInstance = Bpmn.readModelFromFile(new File(bpmnFilePath));
+        } catch (ModelParseException e) {
+            // Handle the parsing exception, log it, and continue
+            logger.warn("Handled BPMN parsing issue: " + e.getMessage());
+            warnings.add("BPMN parsing issues detected: " + e.getMessage());
+            validationResult.setWarnings(warnings);
+        }
 
-            for (Gateway gateway : gateways) {
-                Collection<SequenceFlow> incoming = gateway.getIncoming();
-                Collection<SequenceFlow> outgoing = gateway.getOutgoing();
+        if (modelInstance != null) {
+            try {
+                Collection<Gateway> gateways = modelInstance.getModelElementsByType(Gateway.class);
 
-                if (gateway instanceof ExclusiveGateway || gateway instanceof InclusiveGateway || gateway instanceof ComplexGateway) {
-                    if (!((incoming.size() == 1 && outgoing.size() >= 1) || (incoming.size() >= 1 && outgoing.size() == 1))) {
-                        errors.add("Invalid gateway configuration for gateway ID " + gateway.getId() + ": Exclusive, Inclusive, or Complex Gateway must have one incoming and multiple outgoing flows or vice versa.");
-                    }
-                } else if (gateway instanceof ParallelGateway) {
-                    if (!(incoming.size() == 1 || outgoing.size() == 1)) {
+                for (Gateway gateway : gateways) {
+                    Collection<SequenceFlow> incoming = gateway.getIncoming();
+                    Collection<SequenceFlow> outgoing = gateway.getOutgoing();
+
+                    if (gateway instanceof ExclusiveGateway || gateway instanceof InclusiveGateway || gateway instanceof ComplexGateway) {
+                        if (!((incoming.size() == 1 && outgoing.size() >= 1) || (incoming.size() >= 1 && outgoing.size() == 1))) {
+                            errors.add("Invalid gateway configuration for gateway ID " + gateway.getId() + ": Exclusive, Inclusive, or Complex Gateway must have one incoming and multiple outgoing flows or vice versa.");
+                        }
+                    } else if (gateway instanceof ParallelGateway) {
                         if (!(incoming.size() == 1 || outgoing.size() == 1)) {
+                            errors.add("Invalid gateway configuration for gateway ID " + gateway.getId() + ": Parallel Gateway must have one incoming and multiple outgoing flows or vice versa.");
                         }
                     } else {
                         // Default rule for other types of gateways if any
@@ -51,15 +67,18 @@ public class GatewayValidationService {
                         }
                     }
                 }
+            } catch (Exception e) {
+                logger.error("Validation error while processing gateways: ", e);
+                errors.add("Validation error while processing gateways: " + e.getMessage());
             }
+
             validationResult.setErrors(errors);
             validationResult.setWarnings(warnings);
             validationResult.setValidationStatus(errors.isEmpty() ? "completed" : "failed");
 
-        } catch (Exception e) {
-            logger.error("Validation error: ", e);
+        } else {
             validationResult.setValidationStatus("failed");
-            validationResult.setErrorMessage(e.getMessage());
+            validationResult.setErrorMessage("Model instance could not be parsed.");
         }
 
         return validationResult;

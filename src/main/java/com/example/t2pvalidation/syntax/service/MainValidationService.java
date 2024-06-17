@@ -2,9 +2,12 @@ package com.example.t2pvalidation.syntax.service;
 
 import com.example.t2pvalidation.utils.ValidationResult;
 import com.example.t2pvalidation.utils.ValidationUtils;
+import org.camunda.bpm.model.bpmn.Bpmn;
+import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 

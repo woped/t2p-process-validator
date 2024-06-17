@@ -10,7 +10,7 @@
              expressionLanguage="http://www.w3.org/1999/XPath"
              targetNamespace="http://www.activiti.org/processdef">
 
-  <process id="simpleProcess" name="Einfacher Prozess" isExecutable="true" davide="nikola">
+  <process id="simpleProcess" name="Einfacher Prozess" isExecutable="true" davide="null">
     <!-- Start Event -->
     <startEvent id="startEvent" name="Start">
       <outgoing>sequenceFlow1</outgoing>
