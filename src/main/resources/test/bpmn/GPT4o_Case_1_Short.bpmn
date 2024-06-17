@@ -14,7 +14,7 @@
     <!-- Start Event -->
     <startEvent id="startEvent" name="Start">
       <outgoing>sequenceFlow1</outgoing>
-    </startEvent>  </exclusiveGateway>
+    </startEvent>
 
     <!-- Task -->
     <userTask id="userTask1" name="Erste Aufgabe">
@@ -27,7 +27,7 @@
       <incoming>sequenceFlow2</incoming>
       <outgoing>sequenceFlow3</outgoing>
       <outgoing>sequenceFlow4</outgoing>
-
+    </exclusiveGateway>
 
     <!-- Task for the first path -->
     <userTask id="userTask2" name="Aufgabe A">
