@@ -37,7 +37,6 @@ public class MainValidationService {
         ValidationResult eventValidationResult = validationEventService.validateBpmnStartPoint(xmlFilePath);
         result.put("eventValidation", ValidationUtils.mapValidationResult(eventValidationResult));
 
-        // Call other validation services...
         // Call Flow validation
         ValidationResult flowValidationResult = validationFlowService.validateNoUnboundFlows(xmlFilePath);
         result.put("flowValidation", ValidationUtils.mapValidationResult(flowValidationResult));
