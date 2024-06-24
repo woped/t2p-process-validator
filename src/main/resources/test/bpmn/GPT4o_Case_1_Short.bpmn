@@ -24,9 +24,9 @@
 
     <!-- Exclusive Gateway -->
     <exclusiveGateway id="exclusiveGateway" name="Entscheidungspunkt">
-      <incoming>sequenceFlow2</incoming>
-      <outgoing>sequenceFlow3</outgoing>
-      <outgoing>sequenceFlow4</outgoing>
+       <incoming>sequenceFlow2</incoming>
+       <outgoing>sequenceFlow3</outgoing>
+       <outgoing>sequenceFlow4</outgoing>
     </exclusiveGateway>
 
     <!-- Task for the first path -->
