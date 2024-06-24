@@ -1,5 +1,4 @@
 package com.example.t2pvalidation.syntax.service;
-
 import com.example.t2pvalidation.utils.ValidationResult;
 import com.example.t2pvalidation.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
