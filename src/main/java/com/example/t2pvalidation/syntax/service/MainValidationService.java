@@ -11,6 +11,12 @@ public class MainValidationService {
 
     @Autowired
     private XMLValidationService xmlValidationService;
+    private final ValidationFlowService validationFlowService;
+
+    @Autowired
+    public MainValidationService(ValidationFlowService validationFlowService) {
+        this.validationFlowService = validationFlowService;
+    }
 
     @Autowired
     private GatewayValidationService gatewayValidationService;
@@ -26,6 +32,10 @@ public class MainValidationService {
         // Call Gateway validation
         ValidationResult gatewayValidationResult = gatewayValidationService.validateGateways(xmlFilePath);
         result.put("gatewayValidation", ValidationUtils.mapValidationResult(gatewayValidationResult));
+
+        // Call Flow validation
+        ValidationResult flowValidationResult = validationFlowService.validateNoUnboundFlows(xmlFilePath);
+        result.put("flowValidation", ValidationUtils.mapValidationResult(flowValidationResult));
 
         // Call other validation services
         return result;
