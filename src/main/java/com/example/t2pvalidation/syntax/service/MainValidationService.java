@@ -11,12 +11,9 @@ public class MainValidationService {
 
     @Autowired
     private XMLValidationService xmlValidationService;
-    private final ValidationFlowService validationFlowService;
 
     @Autowired
-    public MainValidationService(ValidationFlowService validationFlowService) {
-        this.validationFlowService = validationFlowService;
-    }
+    private ValidationFlowService validationFlowService;
 
     @Autowired
     private GatewayValidationService gatewayValidationService;
