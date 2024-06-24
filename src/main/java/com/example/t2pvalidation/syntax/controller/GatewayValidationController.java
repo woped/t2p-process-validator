@@ -1,25 +1,25 @@
 package com.example.t2pvalidation.syntax.controller;
+
 import com.example.t2pvalidation.syntax.service.GatewayValidationService;
-import com.example.t2pvalidation.syntax.service.ValidationStartEventService;
+import com.example.t2pvalidation.utils.ValidationResult;
+import com.example.t2pvalidation.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 public class GatewayValidationController {
-    String xmlFilePath = "src/main/resources/test/bpmn/GPT4o_Case_1_Short.bpmn";
+
 
     @Autowired
     private GatewayValidationService gatewayValidationService;
 
     @GetMapping("/validate-bpmn-gateway")
-    public String validateBpmn(String filePath) {
-        boolean isValid = gatewayValidationService.validateGateways(xmlFilePath);
+    public Map<String, Object> validateBpmn(String filePath) {
 
-        if (isValid) {
-            return "The BPMN diagram has correct gateway flows.";
-        } else {
-            return "The BPMN diagram has false gateway flows.";
-        }
+        ValidationResult validationResult = gatewayValidationService.validateGateways(filePath);
+        return ValidationUtils.mapValidationResult(validationResult);
     }
 }
