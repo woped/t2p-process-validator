@@ -15,7 +15,7 @@ public class ValidationUtils {
 
         if ("failed".equals(validationResult.getValidationStatus())) {
             result.put("errorMessage", validationResult.getErrorMessage());
-            result.put("errors", categorizeErrors(validationResult.getErrors())); // Include errors in the response
+            result.put("errors", categorizeErrors(validationResult.getErrors()));
             return result;
         }
 
@@ -35,13 +35,13 @@ public class ValidationUtils {
                     SAXParseException saxError = (SAXParseException) error;
                     errorDetails.put("type", "syntax");
                     errorDetails.put("line", String.valueOf(saxError.getLineNumber()));
-                    errorDetails.put("elementId", extractElementId(saxError));  // Extract the element ID
+                    errorDetails.put("elementId", extractElementId(saxError));
                     errorDetails.put("message", saxError.getMessage());
                     errorDetails.put("suggestion", "Please fix the syntax error.");
                 } else if (error instanceof String) {
                     errorDetails.put("type", "gateway");
                     errorDetails.put("message", (String) error);
-                    errorDetails.put("suggestion", "Please fix the gateway configuration error.");
+                    errorDetails.put("suggestion", "Please fix the configuration error.");
                 }
                 categorizedErrors.add(errorDetails);
             }
@@ -57,13 +57,13 @@ public class ValidationUtils {
                 if (warning instanceof SAXParseException) {
                     SAXParseException saxWarning = (SAXParseException) warning;
                     warningDetails.put("type", "complexity");
-                    warningDetails.put("elementId", extractElementId(saxWarning));  // Extract the element ID
+                    warningDetails.put("elementId", extractElementId(saxWarning));
                     warningDetails.put("message", saxWarning.getMessage());
                     warningDetails.put("suggestion", "Consider reviewing the complexity.");
                 } else if (warning instanceof String) {
                     warningDetails.put("type", "gateway");
                     warningDetails.put("message", (String) warning);
-                    warningDetails.put("suggestion", "Consider reviewing the gateway configuration.");
+                    warningDetails.put("suggestion", "Consider reviewing the BPMN configuration.");
                 }
                 categorizedWarnings.add(warningDetails);
             }
@@ -79,13 +79,10 @@ public class ValidationUtils {
     }
 
     private static String extractElementId(SAXParseException exception) {
-        // Basic implementation to extract element ID from error message
-        // This can be enhanced based on the specific structure of the error messages you receive
         String message = exception.getMessage();
         String elementId = "unknown";
 
         if (message != null) {
-            // Look for patterns within the message
             String[] patterns = {"The element type \"", "Element \"", "Element type \""};
             for (String pattern : patterns) {
                 int startIndex = message.indexOf(pattern);
@@ -99,7 +96,6 @@ public class ValidationUtils {
                 }
             }
 
-            // If no pattern matched, look for the namespace URL as a fallback
             if ("unknown".equals(elementId)) {
                 String nsPattern = "http://www.omg.org/spec/BPMN/20100524/MODEL";
                 if (message.contains(nsPattern)) {
