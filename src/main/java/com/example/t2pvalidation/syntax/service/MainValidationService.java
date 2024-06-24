@@ -17,6 +17,10 @@ public class MainValidationService {
 
     @Autowired
     private GatewayValidationService gatewayValidationService;
+
+    @Autowired
+    private ValidationEventService validationEventService;
+
     private static final String XSD_FILE_PATH = "src/main/resources/BPMN20.xsd";
 
     public Map<String, Object> validateAll(String xmlFilePath) {
@@ -30,6 +34,10 @@ public class MainValidationService {
         ValidationResult gatewayValidationResult = gatewayValidationService.validateGateways(xmlFilePath);
         result.put("gatewayValidation", ValidationUtils.mapValidationResult(gatewayValidationResult));
 
+        ValidationResult eventValidationResult = validationEventService.validateBpmnStartPoint(xmlFilePath);
+        result.put("eventValidation", ValidationUtils.mapValidationResult(eventValidationResult));
+
+        // Call other validation services...
         // Call Flow validation
         ValidationResult flowValidationResult = validationFlowService.validateNoUnboundFlows(xmlFilePath);
         result.put("flowValidation", ValidationUtils.mapValidationResult(flowValidationResult));

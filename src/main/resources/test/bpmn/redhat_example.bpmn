@@ -14,7 +14,7 @@
   <process processType="Private" isExecutable="true" id="com.sample.HelloWorld" name="Hello World" >
 
     <!-- nodes -->
-    <startEvent id="_1" name="StartProcess" />
+    <scriptTask id="_1" name="StartProcess" />
     <scriptTask id="_2" name="Hello" >
       <script>System.out.println("Hello World");</script>
     </scriptTask>

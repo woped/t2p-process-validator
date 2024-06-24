@@ -5,8 +5,8 @@ import java.util.List;
 public class ValidationResult {
     private String validationStatus;
     private String errorMessage;
-    private List<Object> errors;  // Generic type to hold both SAXParseException and custom string errors
-    private List<Object> warnings;  // Generic type to hold both SAXParseException and custom string warnings
+    private List<Object> errors;
+    private List<Object> warnings;
 
     // Getters and setters
     public String getValidationStatus() {

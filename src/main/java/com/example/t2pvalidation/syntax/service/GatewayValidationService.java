@@ -35,10 +35,8 @@ public class GatewayValidationService {
 
         BpmnModelInstance modelInstance = null;
         try {
-            // Attempt to parse the BPMN model
             modelInstance = Bpmn.readModelFromFile(new File(bpmnFilePath));
         } catch (ModelParseException e) {
-            // Handle the parsing exception, log it, and continue
             logger.warn("Handled BPMN parsing issue: " + e.getMessage());
             warnings.add("BPMN parsing issues detected: " + e.getMessage());
             validationResult.setWarnings(warnings);
@@ -61,7 +59,6 @@ public class GatewayValidationService {
                             errors.add("Invalid gateway configuration for gateway ID " + gateway.getId() + ": Parallel Gateway must have one incoming and multiple outgoing flows or vice versa.");
                         }
                     } else {
-                        // Default rule for other types of gateways if any
                         if (!(incoming.size() == 1 && outgoing.size() >= 1)) {
                             errors.add("Invalid gateway configuration for gateway ID " + gateway.getId() + ": Other Gateway types must have one incoming and multiple outgoing flows.");
                         }
