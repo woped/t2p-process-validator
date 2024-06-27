@@ -14,14 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class GatewayValidationService {
@@ -45,23 +43,54 @@ public class GatewayValidationService {
         if (modelInstance != null) {
             try {
                 Collection<Gateway> gateways = modelInstance.getModelElementsByType(Gateway.class);
+                Map<String, String> splitToJoinMap = new HashMap<>();
 
                 for (Gateway gateway : gateways) {
                     Collection<SequenceFlow> incoming = gateway.getIncoming();
                     Collection<SequenceFlow> outgoing = gateway.getOutgoing();
 
                     if (gateway instanceof ExclusiveGateway || gateway instanceof InclusiveGateway || gateway instanceof ComplexGateway) {
-                        if (!((incoming.size() == 1 && outgoing.size() >= 1) || (incoming.size() >= 1 && outgoing.size() == 1))) {
+                        if (!(incoming.size() == 1 && !outgoing.isEmpty()) && !(!incoming.isEmpty() && outgoing.size() == 1)) {
                             errors.add("Invalid gateway configuration for gateway ID " + gateway.getId() + ": Exclusive, Inclusive, or Complex Gateway must have one incoming and multiple outgoing flows or vice versa.");
                         }
                     } else if (gateway instanceof ParallelGateway) {
-                        if (!(incoming.size() == 1 || outgoing.size() == 1)) {
+                        if (!(incoming.size() == 1 || !outgoing.isEmpty())) {
                             errors.add("Invalid gateway configuration for gateway ID " + gateway.getId() + ": Parallel Gateway must have one incoming and multiple outgoing flows or vice versa.");
                         }
                     } else {
-                        if (!(incoming.size() == 1 && outgoing.size() >= 1)) {
+                        if (!(incoming.size() == 1 && !outgoing.isEmpty())) {
                             errors.add("Invalid gateway configuration for gateway ID " + gateway.getId() + ": Other Gateway types must have one incoming and multiple outgoing flows.");
                         }
+                    }
+
+                    // Check for decision text in outgoing sequence flows
+                    for (SequenceFlow flow : outgoing) {
+                        if (flow.getConditionExpression() == null || flow.getConditionExpression().getTextContent().isEmpty()) {
+                            errors.add("Missing decision text for outgoing flow of gateway ID " + gateway.getId() + " with flow ID " + flow.getId());
+                        }
+                    }
+
+                    // Check split and join pairs
+                    if (outgoing.size() > 1) {
+                        splitToJoinMap.put(gateway.getId(), null); // mark as split gateway
+                    } else if (incoming.size() > 1) {
+                        boolean matched = false;
+                        for (Map.Entry<String, String> entry : splitToJoinMap.entrySet()) {
+                            if (entry.getValue() == null) {
+                                splitToJoinMap.put(entry.getKey(), gateway.getId()); // mark as joined
+                                matched = true;
+                                break;
+                            }
+                        }
+                        if (!matched) {
+                            errors.add("Join gateway ID " + gateway.getId() + " has no matching split gateway.");
+                        }
+                    }
+                }
+
+                for (Map.Entry<String, String> entry : splitToJoinMap.entrySet()) {
+                    if (entry.getValue() == null) {
+                        errors.add("Split gateway ID " + entry.getKey() + " has no matching join gateway.");
                     }
                 }
             } catch (Exception e) {
