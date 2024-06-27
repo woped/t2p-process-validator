@@ -34,7 +34,7 @@ public class MainValidationService {
         ValidationResult gatewayValidationResult = gatewayValidationService.validateGateways(xmlFilePath);
         result.put("gatewayValidation", ValidationUtils.mapValidationResult(gatewayValidationResult));
 
-        ValidationResult eventValidationResult = validationEventService.validateBpmnStartPoint(xmlFilePath);
+        ValidationResult eventValidationResult = validationEventService.validateBpmnEvents(xmlFilePath);
         result.put("eventValidation", ValidationUtils.mapValidationResult(eventValidationResult));
 
         // Call Flow validation
