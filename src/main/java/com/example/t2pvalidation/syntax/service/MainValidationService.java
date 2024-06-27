@@ -1,8 +1,10 @@
 package com.example.t2pvalidation.syntax.service;
+
 import com.example.t2pvalidation.utils.ValidationResult;
 import com.example.t2pvalidation.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,13 +15,16 @@ public class MainValidationService {
     private XMLValidationService xmlValidationService;
 
     @Autowired
-    private ValidationFlowService validationFlowService;
-
-    @Autowired
     private GatewayValidationService gatewayValidationService;
 
     @Autowired
     private ValidationEventService validationEventService;
+
+    @Autowired
+    private ValidationFlowService validationFlowService;
+
+    @Autowired
+    private ValidationTaskService validationTaskService;
 
     private static final String XSD_FILE_PATH = "src/main/resources/BPMN20.xsd";
 
@@ -34,6 +39,7 @@ public class MainValidationService {
         ValidationResult gatewayValidationResult = gatewayValidationService.validateGateways(xmlFilePath);
         result.put("gatewayValidation", ValidationUtils.mapValidationResult(gatewayValidationResult));
 
+        // Call Event validation
         ValidationResult eventValidationResult = validationEventService.validateBpmnEvents(xmlFilePath);
         result.put("eventValidation", ValidationUtils.mapValidationResult(eventValidationResult));
 
@@ -41,7 +47,10 @@ public class MainValidationService {
         ValidationResult flowValidationResult = validationFlowService.validateNoUnboundFlows(xmlFilePath);
         result.put("flowValidation", ValidationUtils.mapValidationResult(flowValidationResult));
 
-        // Call other validation services
+        // Call Task validation
+        ValidationResult taskValidationResult = validationTaskService.validateTasks(xmlFilePath);
+        result.put("taskValidation", ValidationUtils.mapValidationResult(taskValidationResult));
+
         return result;
     }
 }
