@@ -3,6 +3,7 @@ package com.example.t2pvalidation.syntax.service;
 import com.example.t2pvalidation.utils.ValidationResult;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.camunda.bpm.model.bpmn.instance.EndEvent;
 import org.camunda.bpm.model.bpmn.instance.StartEvent;
 import org.camunda.bpm.model.xml.ModelParseException;
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
@@ -19,7 +20,7 @@ public class ValidationEventService {
 
     private static final Logger logger = LoggerFactory.getLogger(ValidationEventService.class);
 
-    public ValidationResult validateBpmnStartPoint(String filePath) {
+    public ValidationResult validateBpmnEvents(String filePath) {
         ValidationResult validationResult = new ValidationResult();
         List<Object> errors = new ArrayList<>();
         List<Object> warnings = new ArrayList<>();
@@ -36,6 +37,7 @@ public class ValidationEventService {
         if (modelInstance != null) {
             try {
                 boolean startEventFound = false;
+                boolean endEventFound = false;
 
                 for (ModelElementInstance elementInstance : modelInstance.getModelElementsByType(StartEvent.class)) {
                     if (elementInstance instanceof StartEvent) {
@@ -44,13 +46,24 @@ public class ValidationEventService {
                     }
                 }
 
+                for (ModelElementInstance elementInstance : modelInstance.getModelElementsByType(EndEvent.class)) {
+                    if (elementInstance instanceof EndEvent) {
+                        endEventFound = true;
+                        break;
+                    }
+                }
+
                 if (!startEventFound) {
                     errors.add("No Start Event found in the BPMN model.");
                 }
 
+                if (!endEventFound) {
+                    errors.add("No End Event found in the BPMN model.");
+                }
+
             } catch (Exception e) {
-                logger.error("Validation error while processing start events: ", e);
-                errors.add("Validation error while processing start events: " + e.getMessage());
+                logger.error("Validation error while processing events: ", e);
+                errors.add("Validation error while processing events: " + e.getMessage());
             }
 
             validationResult.setErrors(errors);

@@ -16,9 +16,9 @@ public class ValidationEventController {
     @Autowired
     private ValidationEventService validationEventService;
 
-    @GetMapping("/validate-bpmn-start-event")
+    @GetMapping("/validate-bpmn-events")
     public Map<String, Object> validateBpmn(@RequestParam String filePath) {
-        ValidationResult validationResult = validationEventService.validateBpmnStartPoint(filePath);
+        ValidationResult validationResult = validationEventService.validateBpmnEvents(filePath);
         return ValidationUtils.mapValidationResult(validationResult);
     }
 }
