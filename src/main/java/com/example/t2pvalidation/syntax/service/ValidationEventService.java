@@ -4,6 +4,8 @@ import com.example.t2pvalidation.utils.ValidationResult;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.instance.EndEvent;
+import org.camunda.bpm.model.bpmn.instance.IntermediateCatchEvent;
+import org.camunda.bpm.model.bpmn.instance.IntermediateThrowEvent;
 import org.camunda.bpm.model.bpmn.instance.StartEvent;
 import org.camunda.bpm.model.xml.ModelParseException;
 import org.camunda.bpm.model.xml.instance.ModelElementInstance;
@@ -39,17 +41,45 @@ public class ValidationEventService {
                 boolean startEventFound = false;
                 boolean endEventFound = false;
 
+                // Überprüfen von Start Events
                 for (ModelElementInstance elementInstance : modelInstance.getModelElementsByType(StartEvent.class)) {
                     if (elementInstance instanceof StartEvent) {
+                        StartEvent startEvent = (StartEvent) elementInstance;
                         startEventFound = true;
-                        break;
+                        if (startEvent.getName() == null || startEvent.getName().isEmpty()) {
+                            errors.add("Start Event with ID " + startEvent.getId() + " has no name.");
+                        }
                     }
                 }
 
+                // Überprüfen von End Events
                 for (ModelElementInstance elementInstance : modelInstance.getModelElementsByType(EndEvent.class)) {
                     if (elementInstance instanceof EndEvent) {
+                        EndEvent endEvent = (EndEvent) elementInstance;
                         endEventFound = true;
-                        break;
+                        if (endEvent.getName() == null || endEvent.getName().isEmpty()) {
+                            errors.add("End Event with ID " + endEvent.getId() + " has no name.");
+                        }
+                    }
+                }
+
+                // Überprüfen von Intermediate Catch Events
+                for (ModelElementInstance elementInstance : modelInstance.getModelElementsByType(IntermediateCatchEvent.class)) {
+                    if (elementInstance instanceof IntermediateCatchEvent) {
+                        IntermediateCatchEvent intermediateCatchEvent = (IntermediateCatchEvent) elementInstance;
+                        if (intermediateCatchEvent.getName() == null || intermediateCatchEvent.getName().isEmpty()) {
+                            errors.add("Intermediate Catch Event with ID " + intermediateCatchEvent.getId() + " has no name.");
+                        }
+                    }
+                }
+
+                // Überprüfen von Intermediate Throw Events
+                for (ModelElementInstance elementInstance : modelInstance.getModelElementsByType(IntermediateThrowEvent.class)) {
+                    if (elementInstance instanceof IntermediateThrowEvent) {
+                        IntermediateThrowEvent intermediateThrowEvent = (IntermediateThrowEvent) elementInstance;
+                        if (intermediateThrowEvent.getName() == null || intermediateThrowEvent.getName().isEmpty()) {
+                            errors.add("Intermediate Throw Event with ID " + intermediateThrowEvent.getId() + " has no name.");
+                        }
                     }
                 }
 
