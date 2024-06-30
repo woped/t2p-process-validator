@@ -50,15 +50,21 @@ public class GatewayValidationService {
                     Collection<SequenceFlow> outgoing = gateway.getOutgoing();
 
                     // Validation logic for exclusive gateways with multiple incoming flows and only one outgoing flow
-                    if (gateway instanceof ExclusiveGateway || gateway instanceof InclusiveGateway || gateway instanceof ComplexGateway) {
-                        if (incoming.size() > 1 && outgoing.size() == 1) {
-                            errors.add("Invalid configuration for gateway ID " + gateway.getId() + ": Exclusive, Inclusive, or Complex Gateway should not have multiple incoming and only one outgoing flow.");
-                        } else if (!(incoming.size() == 1 && !outgoing.isEmpty()) && !(!incoming.isEmpty() && outgoing.size() == 1)) {
-                            errors.add("Invalid gateway configuration for gateway ID " + gateway.getId() + ": Exclusive, Inclusive, or Complex Gateway must have one incoming and multiple outgoing flows or vice versa.");
+                    if (gateway instanceof ExclusiveGateway || gateway instanceof InclusiveGateway) {
+                        if (incoming.size() > 1 && outgoing.size() > 1) {
+                            errors.add("Invalid configuration for gateway ID " + gateway.getId() + ": Exclusive or Inclusive Gateway cannot have multiple incoming and multiple outgoing flows.");
                         }
-                    } else if (gateway instanceof ParallelGateway) {
-                        if (!(incoming.size() == 1 || !outgoing.isEmpty())) {
-                            errors.add("Invalid gateway configuration for gateway ID " + gateway.getId() + ": Parallel Gateway must have one incoming and multiple outgoing flows or vice versa.");
+
+                        if (incoming.size() <1) {
+                            errors.add("Invalid configuration for gateway ID " + gateway.getId() + ": Exclusive or Inclusive Gateway has no incoming flow.");
+                        }
+
+                        if (outgoing.size() < 1) {
+                            errors.add("Invalid configuration for gateway ID " + gateway.getId() + ": Exclusive or Inclusive Gateway has no outgoing flow.");
+                        }
+                    }else if (gateway instanceof ParallelGateway) {
+                        if (incoming.size() <= 1 && outgoing.size() <= 1) {
+                            errors.add("Invalid configuration for gateway ID " + gateway.getId() + ": Parallel Gateway should have multiple incoming or multiple outgoing flows.");
                         }
                     } else {
                         if (!(incoming.size() == 1 && !outgoing.isEmpty())) {

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:activiti="http://activiti.org/bpmn"
+             typeLanguage="http://www.w3.org/2001/XMLSchema"
+             expressionLanguage="http://www.w3.org/1999/XPath"
+             targetNamespace="http://www.activiti.org/processdef">
+
+  <process id="simpleProcess" name="Einfacher Prozess" isExecutable="true">
+    <!-- Start Event -->
+    <startEvent id="startEvent" name="Start">
+      <outgoing>sequenceFlow1</outgoing>
+    </startEvent>
+
+    <!-- Task -->
+    <userTask id="userTask1" name="Erste Aufgabe">
+      <incoming>sequenceFlow1</incoming>
+      <outgoing>sequenceFlow2</outgoing>
+    </userTask>
+
+    <!-- Parallel Gateway (Error) -->
+    <parallelGateway id="parallelGateway" name="Parallel Gateway">
+      <incoming>sequenceFlow2</incoming>
+      <outgoing>sequenceFlow3</outgoing>
+    </parallelGateway>
+
+    <!-- Task for the first path -->
+    <userTask id="userTask2" name="Aufgabe A">
+      <incoming>sequenceFlow3</incoming>
+      <outgoing>sequenceFlow4</outgoing>
+    </userTask>
+
+    <!-- End Event A -->
+    <endEvent id="endEventA" name="Ende A">
+      <incoming>sequenceFlow4</incoming>
+    </endEvent>
+
+    <!-- Sequence Flows -->
+    <sequenceFlow id="sequenceFlow1" sourceRef="startEvent" targetRef="userTask1"/>
+    <sequenceFlow id="sequenceFlow2" sourceRef="userTask1" targetRef="parallelGateway"/>
+    <sequenceFlow id="sequenceFlow3" sourceRef="parallelGateway" targetRef="userTask2"/>
+    <sequenceFlow id="sequenceFlow4" sourceRef="userTask2" targetRef="endEventA"/>
+  </process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_simpleProcess">
+    <bpmndi:BPMNPlane id="BPMNPlane_simpleProcess" bpmnElement="simpleProcess">
+      <bpmndi:BPMNShape id="BPMNShape_startEvent" bpmnElement="startEvent">
+        <omgdc:Bounds x="100" y="100" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_userTask1" bpmnElement="userTask1">
+        <omgdc:Bounds x="200" y="80" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_parallelGateway" bpmnElement="parallelGateway">
+        <omgdc:Bounds x="350" y="100" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_userTask2" bpmnElement="userTask2">
+        <omgdc:Bounds x="450" y="80" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_endEventA" bpmnElement="endEventA">
+        <omgdc:Bounds x="600" y="100" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_sequenceFlow1" bpmnElement="sequenceFlow1">
+        <omgdi:waypoint x="136" y="118"/>
+        <omgdi:waypoint x="200" y="118"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_sequenceFlow2" bpmnElement="sequenceFlow2">
+        <omgdi:waypoint x="300" y="118"/>
+        <omgdi:waypoint x="350" y="118"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_sequenceFlow3" bpmnElement="sequenceFlow3">
+        <omgdi:waypoint x="400" y="118"/>
+        <omgdi:waypoint x="450" y="118"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_sequenceFlow4" bpmnElement="sequenceFlow4">
+        <omgdi:waypoint x="550" y="118"/>
+        <omgdi:waypoint x="600" y="118"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
