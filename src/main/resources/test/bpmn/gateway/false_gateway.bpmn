@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" targetNamespace="http://www.activiti.org/processdef" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="17.7.1" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+  <process id="simpleProcess" name="Einfacher Prozess" isExecutable="true">
+    <startEvent id="startEvent" name="Start">
+      <outgoing>sequenceFlow1</outgoing>
+    </startEvent>
+    <userTask id="userTask1" name="Erste Aufgabe">
+      <incoming>sequenceFlow1</incoming>
+      <outgoing>sequenceFlow2</outgoing>
+    </userTask>
+    <exclusiveGateway id="exclusiveGateway" name="Entscheidungspunkt">
+      <incoming>sequenceFlow2</incoming>
+      <outgoing>sequenceFlow3</outgoing>
+      <outgoing>sequenceFlow4</outgoing>
+    </exclusiveGateway>
+    <userTask id="userTask2" name="Aufgabe A">
+      <incoming>sequenceFlow3</incoming>
+      <outgoing>sequenceFlow5</outgoing>
+    </userTask>
+    <userTask id="userTask3" name="Aufgabe B">
+      <incoming>sequenceFlow4</incoming>
+      <outgoing>sequenceFlow6</outgoing>
+    </userTask>
+    <exclusiveGateway id="exclusiveGatewayError" name="Fehlerhafte Entscheidung">
+      <incoming>sequenceFlow5</incoming>
+      <incoming>sequenceFlow6</incoming>
+      <outgoing>sequenceFlowError</outgoing>
+    </exclusiveGateway>
+    <endEvent id="endEventError" name="Ende Fehler">
+      <incoming>sequenceFlowError</incoming>
+    </endEvent>
+    <sequenceFlow id="sequenceFlow1" sourceRef="startEvent" targetRef="userTask1" />
+    <sequenceFlow id="sequenceFlow2" sourceRef="userTask1" targetRef="exclusiveGateway" />
+    <sequenceFlow id="sequenceFlow3" sourceRef="exclusiveGateway" targetRef="userTask2" />
+    <sequenceFlow id="sequenceFlow4" sourceRef="exclusiveGateway" targetRef="userTask3" />
+    <sequenceFlow id="sequenceFlow5" sourceRef="userTask2" targetRef="exclusiveGatewayError" />
+    <sequenceFlow id="sequenceFlow6" sourceRef="userTask3" targetRef="exclusiveGatewayError" />
+    <sequenceFlow id="sequenceFlowError" sourceRef="exclusiveGatewayError" targetRef="endEventError" />
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_simpleProcess">
+    <bpmndi:BPMNPlane id="BPMNPlane_simpleProcess" bpmnElement="simpleProcess">
+      <bpmndi:BPMNShape id="BPMNShape_startEvent" bpmnElement="startEvent">
+        <omgdc:Bounds x="160" y="100" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="166" y="136" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_userTask1" bpmnElement="userTask1">
+        <omgdc:Bounds x="260" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_exclusiveGateway" bpmnElement="exclusiveGateway" isMarkerVisible="true">
+        <omgdc:Bounds x="410" y="100" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="393" y="150" width="85" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_userTask2" bpmnElement="userTask2">
+        <omgdc:Bounds x="510" y="50" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_userTask3" bpmnElement="userTask3">
+        <omgdc:Bounds x="510" y="150" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_exclusiveGatewayError" bpmnElement="exclusiveGatewayError" isMarkerVisible="true">
+        <omgdc:Bounds x="715" y="115" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="637.5" y="126" width="67" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_endEventError" bpmnElement="endEventError">
+        <omgdc:Bounds x="892" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="879" y="98" width="61" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_sequenceFlow1" bpmnElement="sequenceFlow1">
+        <omgdi:waypoint x="196" y="118" />
+        <omgdi:waypoint x="260" y="118" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_sequenceFlow2" bpmnElement="sequenceFlow2">
+        <omgdi:waypoint x="360" y="118" />
+        <omgdi:waypoint x="410" y="118" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_sequenceFlow3" bpmnElement="sequenceFlow3">
+        <omgdi:waypoint x="460" y="100" />
+        <omgdi:waypoint x="510" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_sequenceFlow4" bpmnElement="sequenceFlow4">
+        <omgdi:waypoint x="460" y="150" />
+        <omgdi:waypoint x="510" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_sequenceFlow5" bpmnElement="sequenceFlow5">
+        <omgdi:waypoint x="610" y="90" />
+        <omgdi:waypoint x="740" y="90" />
+        <omgdi:waypoint x="740" y="115" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_sequenceFlow6" bpmnElement="sequenceFlow6">
+        <omgdi:waypoint x="610" y="190" />
+        <omgdi:waypoint x="740" y="190" />
+        <omgdi:waypoint x="740" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_sequenceFlowError" bpmnElement="sequenceFlowError">
+        <omgdi:waypoint x="765" y="140" />
+        <omgdi:waypoint x="824" y="140" />
+        <omgdi:waypoint x="824" y="137" />
+        <omgdi:waypoint x="892" y="137" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

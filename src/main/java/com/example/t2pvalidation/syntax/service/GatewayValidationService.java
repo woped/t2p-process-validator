@@ -49,8 +49,11 @@ public class GatewayValidationService {
                     Collection<SequenceFlow> incoming = gateway.getIncoming();
                     Collection<SequenceFlow> outgoing = gateway.getOutgoing();
 
+                    // Validation logic for exclusive gateways with multiple incoming flows and only one outgoing flow
                     if (gateway instanceof ExclusiveGateway || gateway instanceof InclusiveGateway || gateway instanceof ComplexGateway) {
-                        if (!(incoming.size() == 1 && !outgoing.isEmpty()) && !(!incoming.isEmpty() && outgoing.size() == 1)) {
+                        if (incoming.size() > 1 && outgoing.size() == 1) {
+                            errors.add("Invalid configuration for gateway ID " + gateway.getId() + ": Exclusive, Inclusive, or Complex Gateway should not have multiple incoming and only one outgoing flow.");
+                        } else if (!(incoming.size() == 1 && !outgoing.isEmpty()) && !(!incoming.isEmpty() && outgoing.size() == 1)) {
                             errors.add("Invalid gateway configuration for gateway ID " + gateway.getId() + ": Exclusive, Inclusive, or Complex Gateway must have one incoming and multiple outgoing flows or vice versa.");
                         }
                     } else if (gateway instanceof ParallelGateway) {
