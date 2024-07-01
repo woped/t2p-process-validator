@@ -52,7 +52,7 @@ public class GatewayValidationService {
                     // Validation logic for exclusive gateways with multiple incoming flows and only one outgoing flow
                     if (gateway instanceof ExclusiveGateway || gateway instanceof InclusiveGateway) {
                         if (incoming.size() > 1 && outgoing.size() > 1) {
-                            errors.add("Invalid configuration for gateway ID " + gateway.getId() + ": Exclusive or Inclusive Gateway cannot have multiple incoming and multiple outgoing flows.");
+                            errors.add("Invalid configuration for gateway ID " + gateway.getId() + ": Exclusive or Inclusive Gateway should not have multiple incoming and multiple outgoing flows.");
                         }
 
                         if (incoming.size() <1) {
