@@ -1,5 +1,7 @@
 # t2p-validation
 
+This repository is for the validation of the created t2p-BPMN models.
+
 Syntax Validation Endpoint
 
     Endpoint: /main/syntax/validate
