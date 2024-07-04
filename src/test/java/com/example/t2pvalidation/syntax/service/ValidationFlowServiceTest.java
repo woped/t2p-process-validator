@@ -3,22 +3,18 @@ package com.example.t2pvalidation.syntax.service;
 import com.example.t2pvalidation.utils.ValidationResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
-public class ValidationFlowServiceTest {
+@SpringBootTest
+class ValidationFlowServiceTest {
 
-    @InjectMocks
+    @Autowired
     private ValidationFlowService validationFlowService;
-
-    @BeforeEach
-    void setUp() {
-        // Initialisiere Mockito-Annotationen
-    }
 
     @Test
     public void testValidateNoUnboundFlows_withValidFlows() {
