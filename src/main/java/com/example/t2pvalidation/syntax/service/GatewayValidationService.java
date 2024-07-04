@@ -64,11 +64,11 @@ public class GatewayValidationService {
                     }
 
                     // Check for decision text in outgoing sequence flows
-                    for (SequenceFlow flow : outgoing) {
-                        if (flow.getConditionExpression() == null || flow.getConditionExpression().getTextContent().isEmpty()) {
-                            errors.add("Missing decision text for outgoing flow of gateway ID " + gateway.getId() + " with flow ID " + flow.getId());
-                        }
-                    }
+                    //for (SequenceFlow flow : outgoing) {
+                    //    if (flow.getConditionExpression() == null || flow.getConditionExpression().getTextContent().isEmpty()) {
+                    //        errors.add("Missing decision text for outgoing flow of gateway ID " + gateway.getId() + " with flow ID " + flow.getId());
+                    //    }
+                    //}
 
                     // Check split and join pairs
                     if (outgoing.size() > 1) {
