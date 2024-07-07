@@ -17,3 +17,10 @@ Request Details
 To run Docker: 
 docker build -t t2p-validation .
 docker run -p 8080:8080 t2p-validation
+
+To access the swagger OpenApi Documentation:
+
+    Endpoint: /swagger-ui/index.html
+    
+
+
