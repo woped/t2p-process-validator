@@ -1,0 +1,28 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    export:
+      prometheus:
+        enabled: true
+
+spring:
+  application:
+    name: t2p-process-validator
+
+server:
+  port: 8081
+
+logging:
+  level:
+    root: INFO
+    com.example: DEBUG 
