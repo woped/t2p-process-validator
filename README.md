@@ -1,6 +1,7 @@
 # t2p-validation
 
 This repository is for the validation of the created t2p-BPMN models.
+After cloning this repository, it's essential to [set up git hooks](https://github.com/woped/woped-git-hooks/blob/main/README.md#activating-git-hooks-after-cloning-a-repository) to ensure project standards.
 
 Syntax Validation Endpoint
 
