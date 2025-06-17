@@ -12,6 +12,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .requestMatchers("/actuator/**").permitAll()  // Explizit Actuator-Endpunkte erlauben
                 .anyRequest().permitAll()  // Alle Anfragen zulassen
                 .and()
                 .csrf().disable();  // CSRF-Schutz deaktivieren
