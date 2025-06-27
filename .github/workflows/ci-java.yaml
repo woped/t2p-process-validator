@@ -15,6 +15,7 @@ jobs:
   testing_maven:
     uses: woped/devops/.github/workflows/testing_maven.yaml@main
   sonar_maven:
+    if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
     needs: testing_maven
     uses: woped/devops/.github/workflows/sonar_maven.yaml@main
     secrets: inherit
